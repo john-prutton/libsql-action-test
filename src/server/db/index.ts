@@ -1,5 +1,3 @@
-"use server"
-
 import { join } from "path"
 
 import { drizzle } from "drizzle-orm/libsql"
