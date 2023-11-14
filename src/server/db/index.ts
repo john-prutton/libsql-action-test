@@ -2,24 +2,22 @@
 
 import { join } from "path"
 
-import { drizzle } from "drizzle-orm/better-sqlite3"
-import Database from "better-sqlite3"
+import { drizzle } from "drizzle-orm/libsql"
+import { createClient } from "@libsql/client"
 import { user } from "./schema"
 
 const db = drizzle(
-  new Database(
-    join(
-      import.meta.url.replace(/\\/g, "/").replace(/^file:\/\/+/i, ""),
-      "../sqlite.db"
-    )
-  )
+  createClient({
+    url:
+      "file:///" +
+      join(
+        import.meta.url.replace(/\\/g, "/").replace(/^file:\/\/+/i, ""),
+        "../sqlite.db"
+      ),
+  })
 )
 
-export const createUser = async () => db.insert(user).values({})
+export const createUser = async () =>
+  (await db.insert(user).values({}).run()).toJSON()
 
-export const getUsers = async () =>
-  db
-    .select()
-    .from(user)
-    .execute()
-    .then((data) => data)
+export const getUsers = async () => (await db.select().from(user).run()).rows

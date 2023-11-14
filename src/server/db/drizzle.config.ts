@@ -9,8 +9,8 @@ const path = join(
 export default {
   schema: join(path, "schema.ts").replaceAll("\\", "/"),
   out: "./migrations",
-  driver: "better-sqlite",
+  driver: "libsql",
   dbCredentials: {
-    url: join(path, "sqlite.db"),
+    url: "file:///" + join(path, "sqlite.db").replaceAll("\\", "/"),
   },
 } satisfies Config

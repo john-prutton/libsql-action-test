@@ -1,7 +1,18 @@
 "use client"
 
 import { createUser } from "@/server/db"
+import { useRouter } from "next/navigation"
 
 export function CreateUser() {
-  return <button onClick={() => createUser()}>create new user</button>
+  const router = useRouter()
+  return (
+    <button
+      onClick={async () => {
+        await createUser()
+        router.refresh()
+      }}
+    >
+      create new user
+    </button>
+  )
 }
